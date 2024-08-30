@@ -1,124 +1,149 @@
-Decentralized Voting Application
-Overview
+# Decentralized Voting Application
 
-The Decentralized Voting Application is a blockchain-based voting system designed to ensure transparency, security, and integrity in the voting process. Built using Solidity smart contracts and integrated with a Next.js frontend, this project allows users to create voting sessions, add proposals, and cast or remove votes in a decentralized manner.
-Features
+A decentralized voting application built on Rootstock (RSK), allowing users to create secure polls or elections and vote using RSK tokens. The application ensures transparency and immutability of votes on the blockchain, empowering users to participate in decentralized decision-making.
 
-    Create Voting Sessions: Initiate new voting sessions.
-    Add and Remove Proposals: Manage proposals within each session.
-    Cast and Remove Votes: Vote for or remove votes from proposals.
-    Transparency: All transactions are recorded immutably on the blockchain.
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Smart Contract Methods](#smart-contract-methods)
+- [Contributing](#contributing)
+- [License](#license)
 
-Prerequisites
+## Features
+- Add or remove proposals within a voting session.
+- Cast votes and remove votes for proposals.
+- View proposal details, including vote counts.
+- Easily track votes by users per proposal.
 
-Before you begin, ensure you have the following installed:
+## Installation
 
-    Node.js (version 14.x or later)
-    npm (usually comes with Node.js)
-    Hardhat (for Ethereum development)
-    Git (for version control)
+Follow these steps to set up the project on your local machine:
 
-Installation
-1. Clone the Repository
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v14 or later)
+- [Hardhat](https://hardhat.org/)
+- [MetaMask](https://metamask.io/) browser extension
+- [Git](https://git-scm.com/) installed on your machine
+- An account on [RSK Testnet Faucet](https://faucet.rsk.co/) to get test tokens
 
-First, clone the repository to your local machine:
+### Steps
+**Compiling and deploying the contract is not required, as the contract as already been deployed on the Rootstock Testnet**
 
-git clone git@github.com:Pulsator01/Decentralised-Voting-Application.git
-cd Decentralised-Voting-Application
+1. **Clone the repository:**
+    ```bash
+    git clone git@github.com:Pulsator01/Decentralised-Voting-Application.git
+    cd Decentralised-Voting-Application
+    ```
 
-2. Set Up the Backend
+2. **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-Navigate to the backend directory and install the dependencies:
+3. **Create a `.env` file** in the root directory and add the following:
+    ```bash
+    PRIVATE_KEY=<your_private_key>
+    RSK_TESTNET_URL=https://public-node.testnet.rsk.co
+    ```
+   Replace `<your_private_key>` with your RSK testnet account private key.
 
-cd rootstock-voting-dapp
-npm install
+4. **Compile the smart contracts:**
+    ```bash
+    npx hardhat compile
+    ```
 
-3. Configure Hardhat
+5. **Deploy the smart contract to the RSK Testnet:**
+    ```bash
+    npx hardhat run scripts/deploy.js --network testnet
+    ```
 
-    Install Dependencies:
+6. **Run the frontend:**
+   **Navigate to the frontend folder and run the dev script**
+    ```bash
+    cd voting-dapp-frontend
+    npm install
+    npm run dev
+    ```
+   Open your browser and navigate to `http://localhost:3000`.
 
-    Install Hardhat and its required packages:
+## Setup
 
-npm install --save-dev hardhat @nomiclabs/hardhat-ethers ethers
+To interact with the smart contract through the frontend:
 
-Configure Hardhat:
+1. **Connect your MetaMask wallet** [to the RSK Testnet](https://dev.rootstock.io/dev-tools/wallets/metamask/#connect-with-metamask).
+2. **Get test RSK tokens** from the [RSK Testnet Faucet](https://faucet.rsk.co/).
+3. **Deploy the contract** as mentioned in the installation steps.
+4. **Start creating sessions and casting votes!**
 
-Create a .env file in the backend directory to store your environment variables. This file should include your RSK Testnet or Mainnet credentials:
+## Usage
 
-env
+- **Add Proposals:** Add proposals to a session.
+- **Vote:** Cast votes on the proposals.
+- **Remove Votes:** Remove votes if needed.
+- **View Proposals and Votes:** Check the status of the proposals and votes at any time.
 
-    RSK_API_URL=<your-rsk-api-url>
-    PRIVATE_KEY=<your-private-key>
+## Smart Contract Methods
 
-    Ensure you update the hardhat.config.js file with your network settings.
+The `Voting` smart contract includes the following methods:
 
-4. Deploy the Smart Contract
+### 1. `createSession()`
+Creates a new voting session. Only the user who creates the session can add or remove proposals.
 
-    Compile the Contract:
+### 2. `addProposal(uint sessionId, string memory name)`
+Adds a proposal to a specific session. Only the session creator can add proposals.
 
-    Compile your smart contracts using Hardhat:
+- **Parameters:**
+  - `sessionId`: The ID of the session.
+  - `name`: The name of the proposal.
 
-npx hardhat compile
+### 3. `removeProposal(uint sessionId, uint proposalIndex)`
+Removes a proposal from a specific session. Only the session creator can remove proposals.
 
-Deploy the Contract:
+- **Parameters:**
+  - `sessionId`: The ID of the session.
+  - `proposalIndex`: The index of the proposal to remove.
 
-Run the deployment script to deploy your smart contract to the blockchain:
+### 4. `vote(uint sessionId, uint proposalIndex, uint numberOfVotes)`
+Allows users to cast votes for a proposal in a session.
 
-    npx hardhat run scripts/deploy.js --network <network>
+- **Parameters:**
+  - `sessionId`: The ID of the session.
+  - `proposalIndex`: The index of the proposal.
+  - `numberOfVotes`: The number of votes to cast.
 
-    Replace <network> with your target network (e.g., rskTestnet).
+### 5. `removeVote(uint sessionId, uint proposalIndex, uint numberOfVotes)`
+Allows users to remove their votes from a proposal in a session.
 
-5. Set Up the Frontend
+- **Parameters:**
+  - `sessionId`: The ID of the session.
+  - `proposalIndex`: The index of the proposal.
+  - `numberOfVotes`: The number of votes to remove.
 
-Navigate to the frontend directory and install the dependencies:
+### 6. `getProposalsCount(uint sessionId) public view returns (uint)`
+Returns the number of proposals in a specific session.
 
-cd voting-dapp-frontend
-npm install
+- **Parameters:**
+  - `sessionId`: The ID of the session.
 
-6. Configure Environment Variables
+### 7. `getProposal(uint sessionId, uint index) public view returns (string memory, uint)`
+Returns the details of a specific proposal (name and vote count).
 
-Create a .env file in the frontend directory and add your smart contract address and ABI:
+- **Parameters:**
+  - `sessionId`: The ID of the session.
+  - `index`: The index of the proposal.
 
+### 8. `getVotesByUserForProposal(uint sessionId, address user, uint proposalIndex) public view returns (uint)`
+Returns the number of votes a user has cast for a specific proposal.
 
-NEXT_PUBLIC_CONTRACT_ADDRESS=<your-deployed-contract-address>
-NEXT_PUBLIC_CONTRACT_ABI=<your-contract-abi>
+- **Parameters:**
+  - `sessionId`: The ID of the session.
+  - `user`: The address of the user.
+  - `proposalIndex`: The index of the proposal.
 
-7. Run the Application
+## Contributing
+Contributions are welcome! Please fork this repository and open a pull request with your improvements.
 
-Start the Next.js development server:
-
-npm run dev
-
-The application should now be running at http://localhost:3000.
-Usage
-
-    Access the Application:
-        Open your browser and navigate to http://localhost:3000.
-
-    Interact with the Voting Interface:
-        Create a Voting Session: Click on "Create Session" to start a new voting session.
-        Add Proposals: Add new proposals to the active session.
-        Vote: Select a proposal and cast your vote.
-        Remove Votes: Remove votes from a proposal if needed.
-        Remove Proposals: Remove proposals from the session if required.
-
-Troubleshooting
-
-    Contract Deployment Issues:
-        Ensure you have sufficient gas for deployment.
-        Verify your network configuration in hardhat.config.js.
-
-    Frontend Issues:
-        Check that your .env variables are correctly configured.
-        Ensure the smart contract ABI and address are correct in the .env file.
-
-Contributing
-
-Contributions are welcome! Please follow these steps to contribute:
-
-    Fork the repository.
-    Create a new branch (git checkout -b feature/your-feature).
-    Make your changes.
-    Commit your changes (git commit -am 'Add new feature').
-    Push to the branch (git push origin feature/your-feature).
-    Open a pull request.
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
