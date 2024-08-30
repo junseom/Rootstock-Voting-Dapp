@@ -23,8 +23,6 @@ Installation
 
 First, clone the repository to your local machine:
 
-bash
-
 git clone git@github.com:Pulsator01/Decentralised-Voting-Application.git
 cd Decentralised-Voting-Application
 
@@ -32,9 +30,7 @@ cd Decentralised-Voting-Application
 
 Navigate to the backend directory and install the dependencies:
 
-bash
-
-cd backend
+cd rootstock-voting-dapp
 npm install
 
 3. Configure Hardhat
@@ -42,8 +38,6 @@ npm install
     Install Dependencies:
 
     Install Hardhat and its required packages:
-
-    bash
 
 npm install --save-dev hardhat @nomiclabs/hardhat-ethers ethers
 
@@ -64,15 +58,11 @@ env
 
     Compile your smart contracts using Hardhat:
 
-    bash
-
 npx hardhat compile
 
 Deploy the Contract:
 
 Run the deployment script to deploy your smart contract to the blockchain:
-
-bash
 
     npx hardhat run scripts/deploy.js --network <network>
 
@@ -82,16 +72,13 @@ bash
 
 Navigate to the frontend directory and install the dependencies:
 
-bash
-
-cd ../frontend
+cd voting-dapp-frontend
 npm install
 
 6. Configure Environment Variables
 
 Create a .env file in the frontend directory and add your smart contract address and ABI:
 
-env
 
 NEXT_PUBLIC_CONTRACT_ADDRESS=<your-deployed-contract-address>
 NEXT_PUBLIC_CONTRACT_ABI=<your-contract-abi>
@@ -99,8 +86,6 @@ NEXT_PUBLIC_CONTRACT_ABI=<your-contract-abi>
 7. Run the Application
 
 Start the Next.js development server:
-
-bash
 
 npm run dev
 
@@ -137,7 +122,3 @@ Contributions are welcome! Please follow these steps to contribute:
     Commit your changes (git commit -am 'Add new feature').
     Push to the branch (git push origin feature/your-feature).
     Open a pull request.
-
-License
-
-This project is licensed under the MIT License – see the LICENSE file for details.
